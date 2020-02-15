@@ -18,6 +18,23 @@ public class DeathDropLore extends JavaPlugin implements Listener {
     public void PlayerDeatheent(PlayerDeathEvent event){
         Player entity = event.getEntity();
         PlayerInventory inventory = entity.getInventory();
+        for (int a=100;a<=103;a++){
+            ItemStack item = inventory.getItem(a);
+            if (item==null||item.getType()== Material.AIR){
+                continue;
+            }
+            if (!item.hasItemMeta()){
+                continue;
+            }
+            if (!item.getItemMeta().hasLore()){
+                continue;
+            }
+            String s = item.getItemMeta().getLore().toString();
+            if (s.contains(getConfig().getString("Lore"))){
+                inventory.setItem(a,null);
+                entity.getWorld().dropItemNaturally(entity.getLocation().add(0,2,0),item);
+            }
+        }
         for (int a=0;a<=35;a++){
             ItemStack item = inventory.getItem(a);
             if (item==null||item.getType()== Material.AIR){
@@ -30,7 +47,6 @@ public class DeathDropLore extends JavaPlugin implements Listener {
                 continue;
             }
             String s = item.getItemMeta().getLore().toString();
-            System.out.println(s);
             if (s.contains(getConfig().getString("Lore"))){
                 inventory.setItem(a,null);
                 entity.getWorld().dropItemNaturally(entity.getLocation().add(0,2,0),item);
